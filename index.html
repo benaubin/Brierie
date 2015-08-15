@@ -1,0 +1,70 @@
+
+<html>
+<head>
+    <title>Brierie Servers</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.blue-red.min.css">
+    <script src="https://storage.googleapis.com/code.getmdl.io/1.0.2/material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+    <script src="index.js"></script>
+</head>
+<body ng-app="brierie" ng-controller="IndexCtrl">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <!-- Title -->
+                <span class="mdl-layout-title">Brierie Servers</span>
+                <!-- Add spacer, to align navigation to the right -->
+                <div class="mdl-layout-spacer"></div>
+                <!-- Navigation -->
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="">Shop</a>
+                    <a class="mdl-navigation__link" href="">Forum</a>
+                    <a class="mdl-navigation__link" href="">Tickets</a>
+                </nav>
+            </div>
+        </header>
+    </div>
+    <main class="mdl-layout__content'">
+        <div class="servers mdl-layout mdl-js-layout">
+            <div class="mdl-typography--text-center white branding">
+                <h1>Brierie Servers</h1>
+            </div>
+            <div class="mdl-grid">
+                <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--4-col" ng-repeat="server in servers">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text"><img ng-show="server.favicon" ng-src="{{server.favicon}}" height="32"> {{server.name}}</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <code>{{server.ip}}</code><span ng-show="server.online"> ({{server.ping}}ms)</span><br>
+                        <p ng-show="server.online">
+                            <strong>{{server.onlinePlayers}}</strong>/<strong>{{server.max}}</strong> Players Online<br>
+
+                            <div class="mods" ng-hide="server.vanilla" ng-show="server.online">
+                                <strong>{{server.modsCount}}</strong> Mods<br>
+                                <div class="{{modType.type}}-mods mods-group {{modType.classes}} size-{{modType.size}}" ng-repeat="modType in mods">
+                                    <img ng-show="server.hasMod('{{mod}}')" src="img/mods/{{modType.type}}/{{mod}}.png" width="{{modType.size}}" ng-repeat="mod in modType.mods"/>
+                                </div>
+                            </div>
+                            <div class="vanilla" ng-show="server.vanilla">
+                            <h3 class="mdl-typography--text-center light-green">Vanilla</h3>
+                            </div>
+                        </p>
+                        <p ng-hide="server.online">
+                            <strong>Offline</strong>
+                        </p>
+                    </div>
+                    <div class="mdl-card__menu">
+                        <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                            <i class="material-icons">share</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

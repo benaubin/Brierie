@@ -1,0 +1,30 @@
+
+.servers {
+    background: url('img/background-players.jpg') center / cover;
+}
+
+.white {
+    color: white;
+}
+
+.light-green {
+    color: #80E060;
+}
+
+.mods-group {
+    padding-right: 15px;
+    padding-top: 10px;
+    float: left;
+}
+
+.mods-group.size-16.max-3 {
+    max-width: 48px;
+}
+
+.mods-group.size-16.max-2 {
+    max-width: 36px;
+}
+
+.branding {
+    padding-top: 50px;
+}
