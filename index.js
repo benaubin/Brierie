@@ -11,11 +11,11 @@ angular.module('brierie', [])
         new MinecraftServer('FTB Lite 3', "lite3.brierie.net"),
         new MinecraftServer("Departed", "departed.brierie.net"),
         new MinecraftServer("Regrowth", "regrowth.brierie.net"),
-//        new MinecraftServer('TPPI', "tppi.brierie.co"),
-//        new MinecraftServer('Tech World 2', "tw2.brierie.co"),
-//        new MinecraftServer("Ultimate", "ultimate.brierie.co"),
-//        new MinecraftServer("FTB Horizons 2", "horizons.brierie.co"),  
-//        new MinecraftServer("FTB Unleashed", "u.brierie.co:20000"),
+        new MinecraftServer('TPPI', "tppi.brierie.co"),
+        new MinecraftServer('Tech World 2', "tw2.brierie.co"),
+        new MinecraftServer("Ultimate", "ultimate.brierie.co"),
+        new MinecraftServer("FTB Horizons 2", "horizons.brierie.co"),  
+        new MinecraftServer("FTB Unleashed", "u.brierie.co:20000"),
         new MinecraftServer('SkyBlock', "skyblock.brierie.co"),
         new MinecraftServer('Adventures', "mc.brierie.co"),
     ]
@@ -82,19 +82,25 @@ angular.module('brierie', [])
         data = data.data;
 
         if(data.error == undefined){
-            this.onlinePlayers = data.online;
-            this.online = true;
-            this.max = data.max;
-            this.ping = data.latency;
-            this.mcVersion = data.version;
-            this.mods = data.modinfo.modList.map(function(mod){
-                            return mod.modid;
-                        });
-            this.modsCount = this.mods.length;
-            this.favicon = data.favicon;
-            this.vanilla = data.server === "BungeeCord";
+            if(data.protocol){
+                this.onlinePlayers = data.online;
+                this.online = true;
+                this.max = data.max;
+                this.ping = data.latency;
+                this.mcVersion = data.version;
+                this.mods = data.modinfo.modList.map(function(mod){
+                                return mod.modid;
+                            });
+                this.modsCount = this.mods.length;
+                this.favicon = data.favicon;
+                this.vanilla = data.server === "BungeeCord";
+            } else {
+                this.online = false;
+                this.error = "Cannot query online server."
+            }
         } else {
             this.online = false;
+            this.error = "Offline"
         }
     }
     MinecraftServer.prototype.refresh = function(){return $http.get("http://mcping.net/api/" + this.ip).then(this.acceptData.bind(this));}
