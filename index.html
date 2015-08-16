@@ -40,11 +40,12 @@
                     </div>
                     <div class="mdl-card__supporting-text">
                         <code>{{server.ip}}</code><span ng-show="server.online"> ({{server.ping}}ms)</span><br>
+                        <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate progress-demo" ng-hide="server.loaded"></div>
                         <p ng-show="server.online">
                             <strong>{{server.onlinePlayers}}</strong>/<strong>{{server.max}}</strong> Players Online<br>
 
                             <div class="mods" ng-hide="server.vanilla" ng-show="server.online">
-                                <strong>{{server.modsCount}}</strong> Mods<br>
+                                <div ng-hide="!server.loaded"><strong>{{server.modsCount}}</strong> Mods</div>
                                 <div class="{{modType.type}}-mods mods-group {{modType.classes}} size-{{modType.size}}" ng-repeat="modType in mods">
                                     <img ng-show="server.hasMod('{{mod}}')" src="img/mods/{{modType.type}}/{{mod}}.png" width="{{modType.size}}" ng-repeat="mod in modType.mods"/>
                                 </div>

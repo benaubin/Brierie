@@ -5,7 +5,7 @@ angular.module('brierie', [])
     $scope.allServers = [
         new MinecraftServer("Infinity", "inf.brierie.co"),
         new MinecraftServer("Direwolf20", "dw20.brierie.co"),
-        new MinecraftServer("FTB Horizons 2", "horizons.brierie.co"), 
+        new MinecraftServer("Horizons 2", "horizons.brierie.co"), 
         new MinecraftServer("Departed", "departed.brierie.net"),
         new MinecraftServer('Cloud9', "cloud9.brierie.co"),
         new MinecraftServer("Unleashed", "u.brierie.co:20000"),
@@ -82,6 +82,7 @@ angular.module('brierie', [])
     function MinecraftServer(name, ip) {
         this.name = name;
         this.ip = ip;
+        this.loaded = false;
     }
     
     MinecraftServer.prototype.acceptData = function(data){
@@ -108,6 +109,8 @@ angular.module('brierie', [])
             this.online = false;
             this.error = "Offline"
         }
+        
+        this.loaded = true;
     }
     MinecraftServer.prototype.refresh = function(){return $http.get("http://mcping.net/api/" + this.ip).then(this.acceptData.bind(this));}
     MinecraftServer.prototype.hasMod = function(modid){
