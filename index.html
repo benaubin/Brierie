@@ -41,9 +41,10 @@
                     <div class="mdl-card__supporting-text">
                         <code>{{server.ip}}</code><span ng-show="server.online"> ({{server.ping}}ms)</span><br>
                         <div id="p2" class="mdl-progress mdl-js-progress mdl-progress__indeterminate progress-demo" ng-hide="server.loaded"></div>
-                        <p ng-show="server.online">
-                            <strong>{{server.onlinePlayers}}</strong>/<strong>{{server.max}}</strong> Players Online<br>
-
+                        <div ng-show="server.online">
+                            <p>
+                                <strong>{{server.onlinePlayers}}</strong>/<strong>{{server.max}}</strong> Players Online
+                            </p>
                             <div class="mods" ng-hide="server.vanilla" ng-show="server.online">
                                 <div ng-hide="!server.loaded"><strong>{{server.modsCount}}</strong> Mods</div>
                                 <div class="{{modType.type}}-mods mods-group {{modType.classes}} size-{{modType.size}}" ng-repeat="modType in mods">
@@ -51,9 +52,9 @@
                                 </div>
                             </div>
                             <div class="vanilla" ng-show="server.vanilla">
-                            <h3 class="mdl-typography--text-center light-green">Vanilla</h3>
+                                <h3 class="mdl-typography--text-center light-green">Vanilla</h3>
                             </div>
-                        </p>
+                        </div>
                         <p ng-hide="server.online">
                             <strong>{{server.error}}</strong>
                         </p>
@@ -67,6 +68,11 @@
                 <div class="mdl-typography--text-center centered mdl-cell--12-col">
                     <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" ng-click="showServers();expandedServers = true" ng-hide="expandedServers">
                         <i class="material-icons">expand_more</i>
+                    </button>
+                </div>
+                <div class="mdl-typography--text-center centered mdl-cell--12-col">
+                    <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" ng-click="showServers(6);expandedServers = false" ng-show="expandedServers">
+                        <i class="material-icons">expand_less</i>
                     </button>
                 </div>
             </div>

@@ -71,13 +71,13 @@ angular.module('brierie', [])
     
     $scope.showServers = function(amount){
         $scope.servers = (amount)? $scope.allServers.slice(0, amount): $scope.allServers;
-        
-        $scope.servers.forEach(function(server, i){
-            server.refresh();
-        })
     }
     
-    $scope.showServers(9);
+    $scope.showServers(6)
+    
+    $scope.allServers.forEach(function(server, i){
+        server.refresh();
+    })
 }).factory('MinecraftServer',function($http){
     function MinecraftServer(name, ip) {
         this.name = name;
