@@ -28,3 +28,12 @@
 .branding {
     padding-top: 50px;
 }
+
+.centered {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.no-float {
+    float: none;
+}

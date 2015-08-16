@@ -20,9 +20,6 @@ angular.module('brierie', [])
         new MinecraftServer('SkyBlock', "skyblock.brierie.co"),
         new MinecraftServer('TPPI', "tppi.brierie.co"),
     ]
-    
-    $scope.servers = $scope.allServers.slice(0, 9);
-    
     $scope.mods = [
             {
                 type: "tech",
@@ -72,9 +69,15 @@ angular.module('brierie', [])
             }
         ]
     
-    $scope.servers.forEach(function(server, i){
-        server.refresh();
-    })
+    $scope.showServers = function(amount){
+        $scope.servers = (amount)? $scope.allServers.slice(0, amount): $scope.allServers;
+        
+        $scope.servers.forEach(function(server, i){
+            server.refresh();
+        })
+    }
+    
+    $scope.showServers(9);
 }).factory('MinecraftServer',function($http){
     function MinecraftServer(name, ip) {
         this.name = name;
