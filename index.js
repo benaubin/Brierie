@@ -1,24 +1,27 @@
 angular.module('brierie', [])
 .controller('IndexCtrl',function($scope, MinecraftServer){
     //Note, 'query' has to be enabled in the server's server.properties. 
-    
-    $scope.servers = [
-        new MinecraftServer("Direwolf20", "dw20.brierie.co"),
+
+    $scope.allServers = [
         new MinecraftServer("Infinity", "inf.brierie.co"),
-        new MinecraftServer("Brierie Horizons II 1", "horizons.brierie.net"),
-        new MinecraftServer("SkyFactory2", "sf2.brierie.net"),
-        new MinecraftServer('Cloud9', "cloud9.brierie.co"),
-        new MinecraftServer('FTB Lite 3', "lite3.brierie.net"),
+        new MinecraftServer("Direwolf20", "dw20.brierie.co"),
+        new MinecraftServer("FTB Horizons 2", "horizons.brierie.co"), 
         new MinecraftServer("Departed", "departed.brierie.net"),
-        new MinecraftServer("Regrowth", "regrowth.brierie.net"),
-        new MinecraftServer('TPPI', "tppi.brierie.co"),
+        new MinecraftServer('Cloud9', "cloud9.brierie.co"),
+        new MinecraftServer("Unleashed", "u.brierie.co:20000"),
+        new MinecraftServer('Vanilla', "mc.brierie.co"),
+        new MinecraftServer('Monster', "monster.brierie.co"),
+        new MinecraftServer('FTB Lite 3', "lite3.brierie.net"),
+        new MinecraftServer("Ultimate", "ultimate.brierie.co"), 
+        new MinecraftServer("Horizons", "horizons.brierie.net"),
         new MinecraftServer('Tech World 2', "tw2.brierie.co"),
-        new MinecraftServer("Ultimate", "ultimate.brierie.co"),
-        new MinecraftServer("FTB Horizons 2", "horizons.brierie.co"),  
-        new MinecraftServer("FTB Unleashed", "u.brierie.co:20000"),
+        new MinecraftServer("Regrowth", "regrowth.brierie.net"),
+        new MinecraftServer("SkyFactory2", "sf2.brierie.net"),
         new MinecraftServer('SkyBlock', "skyblock.brierie.co"),
-        new MinecraftServer('Adventures', "mc.brierie.co"),
+        new MinecraftServer('TPPI', "tppi.brierie.co"),
     ]
+    
+    $scope.servers = $scope.allServers.slice(0, 9);
     
     $scope.mods = [
             {
