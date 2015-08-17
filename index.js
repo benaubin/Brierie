@@ -73,7 +73,7 @@ angular.module('brierie', [])
         $scope.servers = (amount)? $scope.allServers.slice(0, amount): $scope.allServers;
     }
     
-    $scope.showServers(6)
+    $scope.showServers(4)
     
     $scope.allServers.forEach(function(server, i){
         server.refresh();
