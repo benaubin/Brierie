@@ -37,3 +37,7 @@
 .no-float {
     float: none;
 }
+
+.news {
+    padding-top: 15px;
+}
