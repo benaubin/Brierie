@@ -2,6 +2,7 @@ import tornado.ioloop
 import tornado.web
 import tornado.escape
 import threading
+import socket
 from mcstatus import MinecraftServer
      
 brierie_status = {
@@ -23,38 +24,50 @@ application = tornado.web.Application(
 def check_status(server):
     print("   - " + server['ip'])
     Server = MinecraftServer.lookup(server['ip'])
+    if server.get("queryPort", False):
+        QueryServer = MinecraftServer(server['ip'], server['queryPort'])
+    else:
+        QueryServer = Server
+    
+    status = {}
     
     try:
         status = vars(Server.status())
-        status['players'] = vars(Server.query().players)
-    except: 
         try:
-            status = vars(Server.status())
+            status['players'] = vars(QueryServer.query().players) 
+        except:
+            print("     - Query is not enabled - cannot show player list.")
             status['players'] = vars(status['players'])
-        except: 
-            try:
-                if server.get("queryPort", False):
-                    Server = MinecraftServer(server['ip'], server['queryPort'])
-                query = vars(Server.query())
-                status = {"queryOnly": True}
-                status['players'] = vars(query['players'])
-                status['mods'] = "Unknown"
-                
-                server['status'] = status
-                return server
-            except:
-                server['status'] = {
-                    "error": True,
-                    "reason": "Cannot connect to server for unknown reasons."
-                }
-                return server
-    
-    status['version'] = vars(status['version'])
-    status['mods'] = map(lambda mod: mod['modid'], status['raw']['modinfo']['modList']) if status['raw']['modinfo'] else false
-    del status['raw'], status['description']
-    
-    server['status'] = status
-    return server
+            status['query'] = False
+        else:
+            status['query'] = True
+    except (socket.error, socket.timeout):
+        try:
+            query = vars(QueryServer.query())
+            status = {"query": "only"}
+            status['players'] = vars(query['players'])
+            status['mods'] = "Unknown"
+            status['online'] = True
+            server['status'] = status
+        except socket.timeout:
+            print("     - Timed out.")
+            status['online'] = True
+            status["error"] = "timed_out"
+            status["error_message"] = "Server status timed out. Most likely online."
+        else:
+            print("     - Query only. Can't show modlist.")
+    except IOError:
+        print("     - Server sent no data (most likely offline).")
+        status["online"] = False
+        status["error_message"] = "Server is offline."
+    else:
+        status['online'] = True
+        status['version'] = vars(status['version'])
+        status['mods'] = map(lambda mod: mod['modid'], status['raw']['modinfo']['modList']) if status['raw']['modinfo'] else False
+        del status['raw'], status['description']
+    finally:
+        server['status'] = status
+        return server
 
 def check_all_servers():
     print("Updating Servers...")
@@ -134,7 +147,7 @@ def check_all_servers():
     }
     
     print("Updated Servers.")
-    threading.Timer(30, check_all_servers).start()
+    threading.Timer(5, check_all_servers).start()
 
 threading.Timer(1, check_all_servers).start()
 
