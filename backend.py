@@ -31,20 +31,29 @@ def check_status(server):
         try:
             status = vars(Server.status())
             status['players'] = vars(status['players'])
-            print("'query' is not enabled on {0}.".format(server['ip']))
         except: 
-            server['status'] = {
-                "error": True,
-                "reason": "Cannot connect to server for unknown reasons."
-            }
-            return server
+            try:
+                if server.get("queryPort", False):
+                    Server = MinecraftServer(server['ip'], server['queryPort'])
+                query = vars(Server.query())
+                status = {"queryOnly": True}
+                status['players'] = vars(query['players'])
+                status['mods'] = "Unknown"
+                
+                server['status'] = status
+                return server
+            except:
+                server['status'] = {
+                    "error": True,
+                    "reason": "Cannot connect to server for unknown reasons."
+                }
+                return server
     
     status['version'] = vars(status['version'])
     status['mods'] = map(lambda mod: mod['modid'], status['raw']['modinfo']['modList']) if status['raw']['modinfo'] else false
     del status['raw'], status['description']
     
     server['status'] = status
-    
     return server
 
 def check_all_servers():
@@ -61,9 +70,9 @@ def check_all_servers():
                 "ip": "dw20.brierie.co"
             },
             {
-                "name": "Horizons 2",
-                "ip": "horizons.brierie.co"
-            }, 
+                "name": "Horizons Daybreaker",
+                "ip": "horizons.brierie.net"
+            },
             {
                 "name": "Departed",
                 "ip": "departed.brierie.net"
@@ -94,8 +103,9 @@ def check_all_servers():
             }, 
             {
                 "name": "Horizons",
-                "ip": "horizons.brierie.net"
-            },
+                "ip": "horizons.brierie.co",
+                "queryPort": 25568
+            }, 
             {
                 "name": "Tech World 2",
                 "ip": "tw2.brierie.co"
